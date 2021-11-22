@@ -5,6 +5,8 @@ This Proof-of-Concept Electron application showcases the abilities to use the rf
 
 In order to run this application you have to have Node.JS installed on your system as well as sufficient permissions for Node.JS to interface with USB HID devices connected to your computer. To enable the right permissions on a Raspberry Pi 3 you can follow [this](#USB-HID-Permissions-on-Raspberry-Pi-3B) guide.
 ### Prerequisites
+* Sufficient USB HID Permissions
+* Node
 ```sh
 $ npm install
 ```
