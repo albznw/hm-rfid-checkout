@@ -7,8 +7,8 @@ const enableScanner = false;
 if (enableScanner) {
   const HID = require("node-hid");
 
-  // Print connected HID devices
-  // console.log("Connected HID devices", HID.devices());
+// Print connected HID devices
+console.log("Connected HID devices", HID.devices());
 
   const vid = 6790
   const pid = 57360

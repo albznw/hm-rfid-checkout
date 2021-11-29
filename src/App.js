@@ -125,6 +125,9 @@ class App extends Component {
       case StateEnum.LANDING:
         // Reset timers
         this.clearThankYouTimer();
+        if (this.state.items != {}) {
+          this.setState({items: {}});
+        }
         break;
       case StateEnum.SCANNER:
         if (this.lastPage != this.state.page) {
