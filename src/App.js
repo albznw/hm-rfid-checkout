@@ -15,8 +15,8 @@ const StateEnum = {
   THANKYOU: "thank-you"
 };
 
-const ThankYouPageTimeout = 10000;
 const ScannerPageTimeout = 5000;
+const ThankYouPageTimeout = 10000;
 
 
 class App extends Component {
@@ -24,7 +24,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: StateEnum.CHECKOUT,
+      page: StateEnum.LANDING,
       items: {}
     };
 
@@ -51,37 +51,36 @@ class App extends Component {
   handleScannedTag(tag) {
     // Add scanned tag to items object
     if(!this.state.items[tag]) {
-      console.log("new item!");
-      this.state.items[tag] = tag;
-      this.setState({ items: this.state.items });
+      console.log("New item scanned.");
+      let newItems = this.state.items;
+      newItems[tag] = tag;
+      this.setState({ items: newItems });
       this.clearScannerTimer();
       this.setScannerTimer();
     } else {
-      console.log("OLD");
+      console.log("Item already scanned.");
     }
   }
 
   setScannerTimer() {
-    if (this.scannerTimer) {
-      this.scannerTimer = setTimeout(this.handleScannerTimeout.bind(this), ScannerPageTimeout);
-      return this.scannerTimer
-    }
+    this.scannerTimer = setTimeout(this.handleScannerTimeout.bind(this), ScannerPageTimeout);
   }
 
   clearScannerTimer() {
-    clearTimeout(this.scannerTimer);
+    if (this.scannerTimer) {
+      clearTimeout(this.scannerTimer);
+    }
     this.scannerTimer = undefined;
   }
 
   setThankYouTimer() {
-    if (this.thankYouTimer === undefined) {
-      this.thankYouTimer = setTimeout(this.handleThankYouTimer.bind(this), ThankYouPageTimeout);
-      return this.thankYouTimer;
-    }
+    this.thankYouTimer = setTimeout(this.handleThankYouTimeout.bind(this), ThankYouPageTimeout);
   }
 
   clearThankYouTimer() {
-    clearTimeout(this.thankYouTimer);
+    if (this.thankYouTimer) {
+      clearTimeout(this.thankYouTimer);
+    }
     this.thankYouTimer = undefined;
   }
 
@@ -89,7 +88,7 @@ class App extends Component {
     this.setState({ page: StateEnum.CHECKOUT });
   }
 
-  handleThankYouTimer() {
+  handleThankYouTimeout() {
     this.setState({ page: StateEnum.LANDING });
   }
 
@@ -116,36 +115,38 @@ class App extends Component {
         return <Checkout items={this.getItemsArray()} btnCallback={() => this.handleCheckoutBtn()} />
       case StateEnum.THANKYOU:
         return <ThankYou btnCallback={() => this.handleThankYouBtn()}/>
+      default:
+        break;
     }
   }
 
   render() {
 
-    switch (this.state.page) {
-      case StateEnum.LANDING:
-        // Reset timers
-        this.clearThankYouTimer();
-        if (this.state.items != {}) {
+    if (this.lastPage !== this.state.page) {
+      // We have changed state.
+
+      switch (this.state.page) {
+        case StateEnum.LANDING:
+          // Reset timers
+          this.clearThankYouTimer();
           this.setState({items: {}});
-        }
-        break;
-      case StateEnum.SCANNER:
-        if (this.lastPage != this.state.page) {
-          // We have changed state. Start timer
+          break;
+        case StateEnum.SCANNER:
           this.setScannerTimer();
-        }
-        break;
-      case StateEnum.CHECKOUT:
-        this.clearScannerTimer();
-        break;
-      case StateEnum.THANKYOU:
-        this.setThankYouTimer();
-        break;
+          break;
+        case StateEnum.CHECKOUT:
+          this.clearScannerTimer();
+          break;
+        case StateEnum.THANKYOU:
+          this.setThankYouTimer();
+          break;
+        default:
+          break;
+      }
     }
 
     // Update current page to last page
     this.lastPage = this.state.page;
-
 
     return (
       <div className="App">

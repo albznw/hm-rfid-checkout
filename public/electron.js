@@ -2,25 +2,32 @@ const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
 const { randomUUID } = require("crypto");
+const tds = require("epc-tds");
 
-const enableScanner = false;
+// Set configurable variables
+const enableScanner = true;
+const epcStart = 18;
+const epcEnd = 31;
+const vid = 6790
+const pid = 57360
+
+// Declare used variables
+let scanner; // declare scanner
+let win; // avoids being garbage collected
+
+// Enable and connect to scanner
 if (enableScanner) {
   const HID = require("node-hid");
 
-// Print connected HID devices
-console.log("Connected HID devices", HID.devices());
+  // Print connected HID devices
+  // console.log("Connected HID devices", HID.devices());
 
-  const vid = 6790
-  const pid = 57360
-
-  const scanner = new HID.HID(vid, pid);
+  scanner = new HID.HID(vid, pid);
   if (scanner) {
     console.log("Connected to scanner");
   }
 }
 
-
-let win; // avoids being garbage collected
 
 function createWindow() {
   // Create the browser window.
@@ -67,23 +74,47 @@ app.on('activate', () => {
   }
 });
 
+function toHexString(byteArray) {
+  return byteArray.reduce((output, elem) => 
+    (output + ('0' + elem.toString(16)).slice(-2)), '');
+}
+
+function calcChecksum(data) {
+  let u_sum = 0;
+  data.forEach(x => {
+    u_sum += x;
+  });
+  u_sum = ((~u_sum) + 1) & 0xFF;
+  return u_sum;
+}
+
+function handleScanData(data) {
+  const frameLength = data[0];
+  const payload = data.slice(1,frameLength);
+  const checksumVal = data.slice(frameLength, frameLength + 1);
+
+  if (checksumVal[0] === calcChecksum(payload)) {
+    const epcPayload = payload.slice(epcStart, epcEnd);
+    const gs2 = tds.valueOf(toHexString(epcPayload));  // Check if it's decodable
+    return gs2.toHexString();  // Return EPC HEX value
+  }
+  return null;
+}
+
 app.whenReady().then(() => {
 
   // Console log data from the scanner as it comes in
   if (enableScanner) {
     scanner.on("data", (data) => {
-      console.log(data);
+      console.log("Handling scan");
+      const epcHexString = handleScanData(data);
+      if (epcHexString) {
+        win.webContents.send("new-scan", epcHexString);
+        console.log("Tag scanned!");
+      } else {
+        console.log("Scan failed");
+      }
     });
   }
 
-  win.webContents.on("did-finish-load", () => {
-    console.log("Sending msg");
-    win.webContents.send("msg", "Startup message from electron backend");
-
-    // setTimeout(() => {
-    //   setInterval(() => {
-    //     win.webContents.send("msg", randomUUID());
-    //   }, 800);
-    // }, 2000);
-  });
 });
