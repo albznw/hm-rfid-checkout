@@ -106,13 +106,13 @@ app.whenReady().then(() => {
   // Console log data from the scanner as it comes in
   if (enableScanner) {
     scanner.on("data", (data) => {
-      console.log("Handling scan");
+      // console.log("Handling scan");
       const sgtin = handleScanData(data);
       if (sgtin) {
         win.webContents.send("new-scan", sgtin);
-        console.log("Tag scanned!");
+        // console.log("Tag scanned!");
       } else {
-        console.log("Scan failed");
+        // console.log("Scan failed");
       }
     });
   }
