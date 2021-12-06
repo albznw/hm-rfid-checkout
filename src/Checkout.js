@@ -1,14 +1,14 @@
 import React from "react";
 var QRCode = require("qrcode.react")
 
-const baseURL = "https://example.com"
+const baseURL = "https://deviswac.z22.web.core.windows.net"
 
 function Checkout(props) {
     const {items, btnCallback} = props;
 
     const createURL = () => {
         if (items) {
-            return `${baseURL}?items=[${items.join()}]`.replaceAll(" ", "");
+            return `${baseURL}/?items=[${items.join()}]`.replaceAll(" ", "");
         } else {
             return baseURL;
         }

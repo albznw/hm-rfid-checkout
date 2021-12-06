@@ -92,6 +92,10 @@ class App extends Component {
     this.setState({ page: StateEnum.LANDING });
   }
 
+  handleScannerBtn() {
+    this.setState({ page: StateEnum.CHECKOUT });
+  }
+
   handleCheckoutBtn() {
     this.setState({ page: StateEnum.THANKYOU });
   }
@@ -110,7 +114,7 @@ class App extends Component {
       case StateEnum.LANDING:
         return <Landing />
       case StateEnum.SCANNER:
-        return <Scanner items={this.getItemsArray()} />
+        return <Scanner items={this.getItemsArray()} btnCallback={() => this.handleScannerBtn()}/>
       case StateEnum.CHECKOUT:
         return <Checkout items={this.getItemsArray()} btnCallback={() => this.handleCheckoutBtn()} />
       case StateEnum.THANKYOU:

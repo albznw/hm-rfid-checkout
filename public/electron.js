@@ -33,12 +33,12 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 480,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    // fullscreen: true,
+    fullscreen: true,
   });
 
   // and load the index.html of the app.
@@ -95,8 +95,8 @@ function handleScanData(data) {
 
   if (checksumVal[0] === calcChecksum(payload)) {
     const epcPayload = payload.slice(epcStart, epcEnd);
-    const gs2 = tds.valueOf(toHexString(epcPayload));  // Check if it's decodable
-    return gs2.toHexString();  // Return EPC HEX value
+    const gs2 = tds.valueOf(toHexString(epcPayload));  // Decode EPC
+    return gs2.toBarcode();  // Return SGTIN
   }
   return null;
 }
@@ -107,9 +107,9 @@ app.whenReady().then(() => {
   if (enableScanner) {
     scanner.on("data", (data) => {
       console.log("Handling scan");
-      const epcHexString = handleScanData(data);
-      if (epcHexString) {
-        win.webContents.send("new-scan", epcHexString);
+      const sgtin = handleScanData(data);
+      if (sgtin) {
+        win.webContents.send("new-scan", sgtin);
         console.log("Tag scanned!");
       } else {
         console.log("Scan failed");

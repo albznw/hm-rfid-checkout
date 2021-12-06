@@ -1,7 +1,7 @@
 import React from "react";
 
 function Scanner(props) {
-    const {items} = props;
+    const {items, btnCallback} = props;
 
     console.log(items);
 
@@ -25,6 +25,7 @@ function Scanner(props) {
                     <p>{items.length}</p>
                 </div>
             </div>
+            <button onClick={btnCallback}>Proceed to checkout</button>
         </div>
     )
 }
