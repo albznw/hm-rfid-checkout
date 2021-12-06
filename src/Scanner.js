@@ -1,34 +1,43 @@
+import { random } from "lodash";
 import React from "react";
 
 function Scanner(props) {
-    const {items, btnCallback} = props;
-
-    console.log(items);
+    const { items, btnCallback } = props;
+    console.log("Items in basket:", items);
 
     const getItems = items.map((data) => {
-        return(
-            <p>{data}</p>
+        return (
+            <div className="item-row">
+                <div className="item-name">
+                    <p>09827364723425</p>
+                </div>
+                <div className="item-price">
+                    <p>{random(400)} kr</p>
+                </div>
+            </div>
         )
     });
 
-    return(
+    return (
         <div className="Scanner">
-            <div className="left">
-                <p>Scanned items</p>
-                <div className="center-wrapper">
-                    {getItems}
+            <div className="head-row">
+                <h2>Scanned items</h2>
+            </div>
+            <div className="main-row">
+                {getItems}
+            </div>
+            <div className="bot-row">
+                <div className="number-of-items">
+                    <p>Number of items: {items.length}</p>
+                </div>
+                <div className="scanner-btn">
+                    <button onClick={btnCallback}>
+                        CHECKOUT <span className="arrow">&rarr;</span>
+                    </button>
                 </div>
             </div>
-            <div className="right">
-                <div className="center-wrapper">
-                    <p>Scanned items:</p>
-                    <p>{items.length}</p>
-                </div>
-            </div>
-            <button onClick={btnCallback}>Proceed to checkout</button>
         </div>
     )
 }
 
 export default Scanner;
-
