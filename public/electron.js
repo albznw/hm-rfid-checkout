@@ -102,7 +102,11 @@ function handleScanData(data) {
 }
 
 app.whenReady().then(() => {
-
+  win.webContents.on('dom-ready', (event)=> {
+    let css = '* { cursor: none !important; }';
+    win.webContents.insertCSS(css);
+  });
+  
   // Console log data from the scanner as it comes in
   if (enableScanner) {
     scanner.on("data", (data) => {
