@@ -14,7 +14,8 @@ const StateEnum = {
   THANKYOU: "thank-you"
 };
 
-const ScannerPageTimeout = 5000;
+// Timeouts until we progress to the next page in ms
+const ScannerPageTimeout = 20000;
 const ThankYouPageTimeout = 30000;
 
 
