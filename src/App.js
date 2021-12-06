@@ -16,7 +16,7 @@ const StateEnum = {
 };
 
 const ScannerPageTimeout = 5000;
-const ThankYouPageTimeout = 10000;
+const ThankYouPageTimeout = 30000;
 
 
 class App extends Component {
@@ -142,6 +142,7 @@ class App extends Component {
           this.clearScannerTimer();
           break;
         case StateEnum.THANKYOU:
+          this.clearThankYouTimer();
           this.setThankYouTimer();
           break;
         default:
