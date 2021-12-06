@@ -76,7 +76,7 @@ button:hover {
 }
 
 .main-row {
-  flex: 76vh;
+  flex: 73vh;
   overflow: auto;
   text-align: left;
   margin: 0pt 10pt 10pt 10pt;
@@ -86,7 +86,7 @@ button:hover {
 }
 
 .bot-row {
-  height: 12vh;
+  height: 15vh;
   text-align: left;
   margin: 0pt 10pt 0pt 10pt;
   padding-left: 2pt;

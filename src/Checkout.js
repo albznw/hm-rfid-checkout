@@ -44,7 +44,7 @@ function Checkout(props) {
                 </div>
             </div>
             <div className="wrapper-btn-checkout">
-                <button onClick={btnCallback}>
+                <button onClick={btnCallback} className="btn-border">
                     Proceed <span className="arrow">&rarr;</span>
                 </button>
             </div>

@@ -31,7 +31,7 @@ function Scanner(props) {
                     <p>Number of items: {items.length}</p>
                 </div>
                 <div className="scanner-btn">
-                    <button onClick={btnCallback}>
+                    <button onClick={btnCallback} className="btn-border">
                         CHECKOUT <span className="arrow">&rarr;</span>
                     </button>
                 </div>

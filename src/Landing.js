@@ -6,7 +6,7 @@ function Landing() {
     return(
         <div className="Landing">
             <div className="left-column">
-                <img className="landing-logo" src={logo}></img>
+                <img className="landing-logo" src={logo} alt={"H&M Logo"}></img>
             </div>
             <div className="right-column">
                 <h1>Welcome!</h1>
