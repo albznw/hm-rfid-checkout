@@ -7,7 +7,6 @@ import ThankYou from "./ThankYou";
 import React, { Component } from 'react';
 const { ipcRenderer } = window.require('electron');
 
-
 const StateEnum = {
   LANDING: "landing",
   SCANNER: "scanner",
@@ -108,11 +107,16 @@ class App extends Component {
     return Object.keys(this.state.items);
   }
 
+  handleExitDiv() {
+    console.log("Exiting app...");
+    window.close()
+  }
+
   showPage = () => {
     console.log("Showing page", this.state.page);
     switch (this.state.page) {
       case StateEnum.LANDING:
-        return <Landing />
+        return <Landing btnCallback={() => this.handleExitDiv()}/>
       case StateEnum.SCANNER:
         return <Scanner items={this.getItemsArray()} btnCallback={() => this.handleScannerBtn()}/>
       case StateEnum.CHECKOUT:
